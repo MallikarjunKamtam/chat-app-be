@@ -9,7 +9,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async createUser(userData: CreateUserDTO): Promise<User> {
     const data = { ...userData, sent_messages: [], received_messages: [] };
@@ -21,6 +21,11 @@ export class UsersService {
   async findUserById(id: number): Promise<User | undefined> {
     return await this.userRepository.findOne({ where: { id } });
   }
+
+  async findUserByUserName(user_name: string): Promise<User | undefined> {
+    return await this.userRepository.findOne({ where: { user_name } });
+  }
+
 
   async getAllUsers(): Promise<User[]> {
     return await this.userRepository.find();

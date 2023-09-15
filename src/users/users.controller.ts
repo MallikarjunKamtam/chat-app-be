@@ -6,15 +6,18 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDTO } from './dto/createUser.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
+  @UseGuards(AuthGuard)
   @Get()
   async getAllUsers(): Promise<User[]> {
     return await this.usersService.getAllUsers();

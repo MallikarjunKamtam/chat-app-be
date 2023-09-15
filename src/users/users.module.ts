@@ -10,5 +10,6 @@ const dependencies = [TypeOrmModule.forFeature([User])];
   imports: [...dependencies],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService]
 })
-export class UsersModule {}
+export class UsersModule { }
