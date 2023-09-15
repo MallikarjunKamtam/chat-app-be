@@ -1,7 +1,7 @@
-// users/entities/message.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Expose } from 'class-transformer'
 
 @Entity()
 export class Message {
@@ -14,12 +14,22 @@ export class Message {
   @Column()
   content: string;
 
-  @ManyToOne(() => User, (user) => user.sent_messages)
-  sender: number;
-
-  @ManyToOne(() => User, (user) => user.received_messages)
-  receiver: number;
 
   @Column()
   created_at: string;
+
+
+  @ManyToOne(() => User, (user) => user.sent_messages)
+  @JoinColumn({ name: 'senderId' })
+  sender: User;
+
+
+
+  @ManyToOne(() => User, (user) => user.received_messages)
+  @JoinColumn({ name: 'receiverId' })
+  receiver: User;
+
+
+
+
 }

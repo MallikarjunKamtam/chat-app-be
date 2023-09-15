@@ -2,10 +2,11 @@ import { Controller, Body, Post, Get, Param } from '@nestjs/common';
 import { CreateMessageDTO } from './dto/createMessage.dto';
 import { Message } from './entity/messages.entity';
 import { MessagesService } from './messages.service';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('messages')
 export class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {}
+  constructor(private readonly messagesService: MessagesService) { }
 
   @Post()
   async createMessage(@Body() msgBody: CreateMessageDTO): Promise<Message> {

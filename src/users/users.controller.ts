@@ -12,6 +12,7 @@ import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Public } from 'src/auth/public';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +24,8 @@ export class UsersController {
     return await this.usersService.getAllUsers();
   }
 
+
+  @Public()
   @Post()
   async createUser(@Body() userData: CreateUserDTO): Promise<User> {
     return await this.usersService.createUser(userData);
