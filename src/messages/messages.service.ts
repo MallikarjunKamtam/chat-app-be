@@ -36,10 +36,13 @@ export class MessagesService {
       .leftJoinAndSelect('message.receiver', 'receiver')
       .where('(sender.id = :senderId OR receiver.id = :senderId)', { senderId })
       .andWhere('(sender.id = :receiverId OR receiver.id = :receiverId)', { receiverId })
-      .getMany();
+      .orderBy('message.created_at', 'DESC')
+      .getMany()
 
     return res;
   }
+
+
   async getOneMessageById(id: string) {
     const msg = await this.msgRepository.findOne({ where: { id } });
 
