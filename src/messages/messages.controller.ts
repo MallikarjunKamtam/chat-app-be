@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, Param } from '@nestjs/common';
+import { Controller, Body, Post, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateMessageDTO } from './dto/createMessage.dto';
 import { Message } from './entity/messages.entity';
 import { MessagesService } from './messages.service';
@@ -13,10 +13,14 @@ export class MessagesController {
     return await this.messagesService.createMessage(msgBody);
   }
 
-  @Get(':user_id')
+  @Get(':from/to/:to')
   async getAllMessages(
-    @Param('user_id') id: number,
-  ): Promise<Message[] | undefined> {
-    return await this.messagesService.getAllMessages(id);
+
+    @Param('from', ParseIntPipe) from: number,
+    @Param('to', ParseIntPipe) to: number,
+    @Param('user_id') id: number,): Promise<Message[] | undefined> {
+
+
+    return await this.messagesService.getAllMessages({ receiverId: +to, senderId: +from });
   }
 }

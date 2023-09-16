@@ -29,17 +29,17 @@ export class MessagesService {
     return await this.msgRepository.save(createdMsg);
   }
 
-  async getAllMessages(user_id: number): Promise<Message[]> {
-    const res = await this.msgRepository.find({ relations: ['sender', 'receiver'], where: { receiver: { id: user_id } } })
+  async getAllMessages({ receiverId, senderId }: { senderId: number; receiverId: number }): Promise<Message[]> {
+    const res = await this.msgRepository
+      .createQueryBuilder('message')
+      .leftJoinAndSelect('message.sender', 'sender')
+      .leftJoinAndSelect('message.receiver', 'receiver')
+      .where('(sender.id = :senderId OR receiver.id = :senderId)', { senderId })
+      .andWhere('(sender.id = :receiverId OR receiver.id = :receiverId)', { receiverId })
+      .getMany();
 
-
-
-
-
-
-    return res
+    return res;
   }
-
   async getOneMessageById(id: string) {
     const msg = await this.msgRepository.findOne({ where: { id } });
 
