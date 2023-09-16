@@ -6,7 +6,8 @@ import {
   Delete,
   Param,
   Body,
-  UseGuards
+  UseGuards,
+  Query
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
@@ -20,8 +21,9 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async getAllUsers(): Promise<User[]> {
-    return await this.usersService.getAllUsers();
+
+  async getAllUsers(@Query('id') id: number): Promise<User[]> {
+    return await this.usersService.getAllUsers(+id)
   }
 
 
