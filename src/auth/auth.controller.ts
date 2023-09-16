@@ -21,4 +21,11 @@ export class AuthController {
 
         return await this.authService.logout(logoutPayload?.user_name)
     }
+
+
+    @Public()
+    @Post('/verify-user')
+    async verifyUser(@Body() token: { token: string }) {
+        return await this.authService.verifyUser(token.token)
+    }
 }

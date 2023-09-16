@@ -13,7 +13,7 @@ export class AuthService {
 
     async login({ password, user_name }: { user_name: string, password: string }) {
         const user = await this.userService.findUserByUserName(user_name)
-        console.log(user, 'useruseruser')
+
         if (!user || user.password !== password) {
             throw new UnauthorizedException()
         }
@@ -25,7 +25,31 @@ export class AuthService {
 
 
     async logout(user_name: string) {
-
         return { message: 'Success' }
     }
+
+
+    async verifyUser(token: string) {
+
+        if (token) {
+            try {
+                const payload = await this.jwtService.verifyAsync(
+                    token.split(' ')[1],
+                    {
+                        secret: process.env.JWT_CONSTANT
+                    }
+                );
+
+                return payload
+            } catch {
+                throw new UnauthorizedException();
+            }
+        }
+
+    }
+
+
+
+
 }
+
